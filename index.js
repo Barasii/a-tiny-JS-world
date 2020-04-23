@@ -6,7 +6,23 @@ class Inhabitant {
       this.legs = legs;
       this.hands = hands;
       this.saying = saying;
+      this.friends = [];
+   }
+
+   toString() {
+      return Object.keys(this).map(prop => `${this[prop]}`).join('; ');
+      }
+
+   callFriends(friends) {         
       this.friends = friends;
+      }
+}
+
+const Meow = superclass =>
+   class extends superclass {
+      constructor(species, name, gender, legs, hands, saying, friends) {
+         super(species, name, gender, legs, hands, saying, friends);
+         this.saying = 'mur-mur';
    }
 }
 
@@ -40,26 +56,31 @@ class Dog extends Animal {
    }
 }
 
-class Cat extends Animal {
-   constructor( name, gender, saying, friends) {
-      super('cat', name, gender, saying, friends);
+class Cat extends Meow(Animal) {
+   constructor(name, gender, friends) {
+      super('cat', name, gender, friends);
    }
 }
 
-class CatWoman extends Inhabitant {
+class CatWoman extends Meow(Human) {
    constructor(name, friends) {
-      super('human', name, 'female', 2, 2, 'mur-mur', friends);
+      super(name, 'female', friends);
    }
 }
 
-const man = new Man('Petro', 'Zdorov!', ['woman', 'dog']),
-      woman = new Woman('Katia', 'Pryvit)', ['man']),
-      dog = new Dog('Nika', 'female', 'gav-gav', ['man']),
-      cat = new Cat('Musia', 'female', 'mur-mur', ['woman', 'catWoman']),
-      catWoman = new CatWoman('Murka', ['cat']);
+const man = new Man('Petro', 'Zdorov!'),
+      woman = new Woman('Katia', 'Pryvit)'),
+      dog = new Dog('Nika','female', 'gav-gav'),
+      cat = new Cat('Musia', 'female'),
+      catWoman = new CatWoman('Murka');
 
+man.callFriends(['woman', 'dog']);
+woman.callFriends(['man']);
+dog.callFriends(['man']);
+cat.callFriends(['woman', 'catWoman']);
+catWoman.callFriends(['cat']);
 
 [man, woman, dog, cat, catWoman]
    .forEach(inhabitant => {
-      print([inhabitant.species, inhabitant.name, inhabitant.gender, inhabitant.legs, inhabitant.hands, inhabitant.saying, inhabitant.friends].join('; '));
+      print (inhabitant);
 })
